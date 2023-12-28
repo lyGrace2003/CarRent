@@ -1,0 +1,37 @@
+.sidebar{
+    color: white;
+    width: 230px;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+.nav-list{
+    list-style: none;
+    height: 100%;
+    padding: 0%;
+    margin-top: 10px;
+}
+.nav-list-item{
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+.nav-list-item i{
+    font-size: 20px;
+    height: 25px;
+    width: 25px;
+    margin-left: 20px;
+    margin-right: 25px;
+    text-align: center;
+}
+.nav-list-item span{
+    width: 100px;
+    text-transform: capitalize;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+.nav-list-open li:hover{
+    background-color: rgba(255, 171, 64, 0.8 );
+    border-radius: 10px;
+}
