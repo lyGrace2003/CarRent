@@ -1,17 +1,21 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { BookingComponent } from 'src/Screens/bookingscreen/booking.component';
-import { HomeComponent } from 'src/Screens/homescreen/home.component';
+  import { NgModule } from '@angular/core';
+  import { RouterModule, Routes } from '@angular/router';
+import { SignupComponent } from './screens/signup/signup.component';
+import { HomeComponent } from './screens/home/home.component';
+import { BookingComponent } from './screens/booking/booking.component';
+import { LoginComponent } from './screens/login/login.component';
 
-const routes: Routes = [
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
-  {path: 'booking', component: BookingComponent},
+  const routes: Routes = [
+    {path: '', redirectTo: 'home', pathMatch: 'full'},
+    {path: 'home', component: HomeComponent},
+    {path: 'booking', component: BookingComponent},
+    {path: 'login', component: LoginComponent},
+    {path: 'signup', component: SignupComponent},
 
-];
+  ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
+  @NgModule({
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
+  })
+  export class AppRoutingModule { }

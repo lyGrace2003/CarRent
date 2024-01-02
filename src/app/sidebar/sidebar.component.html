@@ -1,23 +1,26 @@
 <div class="sidebar">
     <ul class="nav-list" [ngClass]="{'nav-list-open': sidebarStatus}">
-        <li class="nav-list-item">
-            <i><mat-icon>home</mat-icon></i>
-            <span>
-                <!-- router link doesnt work here -->
-                <a href ="#">Home</a>
-            </span>           
-        </li>
-        <li class="nav-list-item">
-            <i><mat-icon>directions_car</mat-icon></i>
-            <span>
-                <a href ="#">Booking</a>
-            </span>
-        </li>
-        <li class="nav-list-item">
-            <i><mat-icon>logout</mat-icon></i>
-            <span>
-                <a href ="#">Logout</a>
-            </span>
-        </li>
+      <li class="nav-list-item">
+        <i><mat-icon>home</mat-icon></i>
+        <span>
+          <!-- Use routerLink for navigation -->
+          <a routerLink="/">Home</a>
+        </span>
+      </li>
+      <li class="nav-list-item">
+        <i><mat-icon>directions_car</mat-icon></i>
+        <span>
+          <!-- Use routerLink for navigation -->
+          <a routerLink="/booking">Booking</a>
+        </span>
+      </li>
+      <li class="nav-list-item">
+        <i><mat-icon>logout</mat-icon></i>
+        <span>
+          <!-- Example link without routerLink -->
+          <a href="#">Logout</a>
+        </span>
+      </li>
     </ul>
-</div>
+  </div>
+  
