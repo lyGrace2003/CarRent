@@ -14,6 +14,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import {provideFirestore, getFirestore} from '@angular/fire/firestore';
 import { LandingModule } from './landing/landing.module';
 import { UserModule } from './user/user.module';
+import { AdminModule } from './admin/admin.module';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { UserModule } from './user/user.module';
     provideFirebaseApp(()=>initializeApp(environment.firebase)),
     provideFirestore(()=> getFirestore()),
     LandingModule,
-    UserModule
+    UserModule,
+    AdminModule
   ],
   providers: [],
   bootstrap: [AppComponent]

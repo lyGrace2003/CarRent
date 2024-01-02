@@ -1,8 +1,39 @@
 <div class="home-container">
     <div class="header">   
+        <mat-toolbar class="toolbar">
         <span class="title">Cars For Rent</span>
 
         <span class="spacer"></span>
-        <a mat-raised-button color="primary" class="btn">Login</a>
+        <a mat-raised-button color="warn" id="btn" class="location" [matMenuTriggerFor]="locationMenu">
+            <span>Location</span>
+            <mat-icon><span class="material-symbols-outlined">arrow_drop_down</span></mat-icon>
+        </a>
+        <mat-menu #locationMenu="matMenu">
+            <button mat-menu-item>Cebu</button>
+            <button mat-menu-item>Mabolo</button>
+            <button mat-menu-item>Talisay</button>
+        </mat-menu>
+        <a mat-raised-button color="warn" id="btn" class="numSeat" [matMenuTriggerFor]="seatMenu">
+            <span>Num of seats</span>
+            <mat-icon><span class="material-symbols-outlined">arrow_drop_down</span></mat-icon>
+        </a>
+        <mat-menu #seatMenu="matMenu">
+            <button mat-menu-item>2</button>
+            <button mat-menu-item>4</button>
+            <button mat-menu-item>5</button>
+            <button mat-menu-item>7</button>
+            <button mat-menu-item>8</button>
+        </mat-menu>
+        <!-- date - need to drop down a calendar -->
+        <a mat-raised-button color="warn" id="btn" class="pick"> 
+            <span>Pick-up</span>
+            <mat-icon><span class="material-symbols-outlined">arrow_drop_down</span></mat-icon>
+        </a>
+        <!-- date - need to drop down a calendar -->
+        <a mat-raised-button color="warn" id="btn" class="drop">
+            <span>Drop-off</span>
+            <mat-icon><span class="material-symbols-outlined">arrow_drop_down</span></mat-icon>
+        </a>
+    </mat-toolbar>
     </div>
 </div>

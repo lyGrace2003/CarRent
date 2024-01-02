@@ -16,6 +16,9 @@ import { environment } from 'src/environments/environment.development';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { HomeComponent } from '../screens/home/home.component';
 import { BookingComponent } from '../screens/booking/booking.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -32,9 +35,12 @@ import { BookingComponent } from '../screens/booking/booking.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatMenuModule,
     MatToolbarModule, 
     MatButtonModule, 
     MatIconModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     provideFirebaseApp(()=>initializeApp(environment.firebase)),
     provideFirestore(()=> getFirestore()),
   ]
