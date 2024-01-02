@@ -1,0 +1,9 @@
+<div class="container">
+    <app-navbar (sidebarToggle)="sidebarStatus = $event;"></app-navbar>
+    <main>
+        <app-sidebar [sidebarStatus]="sidebarStatus" [ngClass]="{'app-sidebar-open': sidebarStatus}"></app-sidebar>
+        <div class="display-area" [ngClass]="{'display-area-shrink': sidebarStatus}">
+            <router-outlet></router-outlet> 
+        </div>
+    </main>
+</div>
