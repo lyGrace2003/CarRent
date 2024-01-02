@@ -33,7 +33,6 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     MatIconModule,
     provideFirebaseApp(()=>initializeApp(environment.firebase)),
     provideFirestore(()=> getFirestore()),
-    UserModule,
   ]
 })
 export class UserModule { }

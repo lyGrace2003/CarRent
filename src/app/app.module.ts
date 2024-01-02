@@ -16,7 +16,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { UserModule } from './user/user.module';
 import { LandingModule } from './landing/landing.module';
-import { AdminModule } from './admin/admin.module';
 
 
 @NgModule({
@@ -34,7 +33,6 @@ import { AdminModule } from './admin/admin.module';
     provideFirestore(()=> getFirestore()),
     UserModule,
     LandingModule,
-    AdminModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
