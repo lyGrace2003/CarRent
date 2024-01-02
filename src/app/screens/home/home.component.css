@@ -1,0 +1,17 @@
+.home-container {
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+.title {
+    font-size: 15pt;
+}
+
+.spacer {
+    flex: 1 1 1 auto;
+}
+
+.btn {
+    width: 150px;
+    height: 40px;
+}

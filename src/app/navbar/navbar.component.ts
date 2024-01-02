@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -7,6 +8,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
   
 })
 export class NavbarComponent {
+
+  constructor(private router: Router) {}
+
+  logout() {
+    this.router.navigate(['/']);
+  }
+
   @Output() sidebarToggle = new EventEmitter<boolean>();
   menuStatus: boolean = false;
 

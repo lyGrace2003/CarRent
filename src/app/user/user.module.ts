@@ -14,13 +14,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from 'src/environments/environment.development';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { HomeComponent } from '../screens/home/home.component';
+import { BookingComponent } from '../screens/booking/booking.component';
 
 
 @NgModule({
   declarations: [
     UserComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    HomeComponent,
+    BookingComponent
   ],
   imports: [
     CommonModule,

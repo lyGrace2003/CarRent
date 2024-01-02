@@ -11,13 +11,16 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from 'src/environments/environment.development';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { StartComponent } from '../screens/start/start.component';
+import { LoginComponent } from '../screens/login/login.component';
+import { UserModule } from '../user/user.module';
 
 
 @NgModule({
   declarations: [
     LandingComponent, 
     StartComponent,
-    NavComponent
+    NavComponent,
+    LoginComponent,
   ],
   imports: [
     CommonModule,

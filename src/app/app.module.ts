@@ -12,10 +12,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { environment } from 'src/environments/environment.development';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import {provideFirestore, getFirestore} from '@angular/fire/firestore';
-import { NavbarComponent } from './navbar/navbar.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { UserModule } from './user/user.module';
 import { LandingModule } from './landing/landing.module';
+import { UserModule } from './user/user.module';
 
 
 @NgModule({
@@ -31,8 +29,8 @@ import { LandingModule } from './landing/landing.module';
     MatIconModule,
     provideFirebaseApp(()=>initializeApp(environment.firebase)),
     provideFirestore(()=> getFirestore()),
-    UserModule,
     LandingModule,
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

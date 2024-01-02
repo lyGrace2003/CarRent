@@ -1,27 +1,26 @@
-::ng-deep body {
-    height: 100vh;
-    background: linear-gradient(
-        to right,
-        white 0%,
-        white 50%,
-        rgba(239, 108, 0, 1) 50%,
-        rgba(239, 108, 0, 1) 100%
-    );
+.start-container{
+height: 100vh;
+background: linear-gradient(
+    to right,
+    white 0%,
+    white 60%,
+    rgba(239, 108, 0, 1) 60%,
+    rgba(239, 108, 0, 1) 100%
+);
 }
-
 .wrapper{
     display: flex;
     align-items: center;
     justify-content: center;
     height: 70vh;
     position: relative;
-    width: 400px;
-    left: 120px;
+    width: 50%;
+    left: 200px;
     top: 15px;
     border-radius: 20px;
     padding-bottom: 10px;
 }
-.wrapper .login-form{
+.wrapper .signup-form{
     width: 100%;
     height: 100%;
     padding: 40px;
@@ -60,8 +59,21 @@ h1{
     height: 50px;
     text-align: center;
     line-height: 50px;
+    text-decoration: none;
 }
 form{
     margin-bottom: 50px;
 }
+.img-wrapper {
+    width: 100%; /* Adjust as needed */
+    padding: 20px;
+    transform: translateY(40%) translateX(40%);
+
+}
+
+.img-wrapper img {
+    width: 150%;
+    height: auto;
+}
+
 
