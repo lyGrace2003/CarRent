@@ -1,18 +1,18 @@
 <div class="login-container">
     <div class="wrapper">
-        <div class="login-form">
+        <div class="login-form" [formGroup]="form">
             <h1>Login</h1>
             <form action="#">
                 <div class="input-box">
                     <mat-icon class="icon"><span class="material-symbols-outlined">mail</span></mat-icon>
-                    <input type="email" placeholder="Email Address" required>
+                    <input type="email" placeholder="Email Address" formControlName="email" required>
                 </div>
                 <div class="input-box">
                     <mat-icon class="icon"><span class="material-symbols-outlined">lock</span></mat-icon>
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" placeholder="Password" formControlName="password" required>
                 </div>
             </form>
-            <a mat-raised-button color="primary" style="color: white;" class="login" routerLink="/user">Login</a>
-        </div>
+            <a mat-raised-button color="primary" style="color: white;" class="login" (click)="login()">Login</a>
+        </div>  
     </div>
 </div>
