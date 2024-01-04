@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/compat/firestore';
-import { User } from '../model/user';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import { Current } from '../model/book';
+import { Firestore, addDoc, collection } from '@angular/fire/firestore';
+import { inject } from '@angular/core';
 
 
 @Injectable({
@@ -10,10 +11,17 @@ import { Current } from '../model/book';
 })
 export class DataService {
 
-  constructor(private fireauth: AngularFireAuth ,private firestore: AngularFirestore ) {}
+  constructor(private fireauth: AngularFireAuth ,private fire: AngularFirestore ) {}
+  firestore: Firestore = inject(Firestore);
 
-  addCurrent(bookingData: Current): Promise<any> {
-    return this.firestore.collection('currBooking').add(bookingData);
+  async addCurrent(bookingData: Current): Promise<any> {
+    const acollection = collection(this.firestore, 'currBooking');
+
+    await addDoc(acollection, bookingData).then(() => {
+      console.log("Booking successful");
+   }).catch((error) => {
+      console.error("Booking unsuccessful:", error);
+   });
   }
 
 }

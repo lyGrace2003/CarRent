@@ -5,8 +5,8 @@
 
         <span class="spacer"></span>
         <!-- select location -->
-        <mat-form-field class="fields">
-            <mat-label>Location</mat-label>
+        <mat-form-field id="1" class="fields">
+            <mat-label for="location">Location</mat-label>
             <mat-select formControlName="lValue">
               <mat-option value="Cebu">Cebu</mat-option>
               <mat-option value="Mabolo">Mabolo</mat-option>
@@ -14,9 +14,9 @@
             </mat-select>
           </mat-form-field>
           <!-- select start and end date -->
-          <mat-form-field class="fields">
-            <mat-label>Dates</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
+          <mat-form-field id="2" class="fields">
+            <mat-label for="date">Dates</mat-label>
+            <mat-date-range-input id="date" [rangePicker]="picker">
                 <input matStartDate placeholder="Start date" formControlName="startDate">
                 <input matEndDate placeholder="End date" formControlName="endDate">
             </mat-date-range-input>
@@ -34,6 +34,7 @@
             <div *ngIf="(rental$ | async) as rentals" class="card-container">
             <div *ngFor="let rental of rentals" class="card">
                 <div class="card-body">
+                    <!-- add image here -->
                 <p class="car-brand">{{ rental.brand }}</p>
                 <p class="car-model">{{ rental.model }}</p>
                 <p class="car-type">{{ rental.carType }}</p>
@@ -52,6 +53,7 @@
             <div *ngIf="(filter$ | async) as filters" class="card-container">
                 <div *ngFor="let filter of filters" class="card">
                     <div class="card-body">
+                        <!-- add image here -->
                     <p class="car-brand">{{ filter.brand }}</p>
                     <p class="car-model">{{ filter.model }}</p>
                     <p class="car-type">{{ filter.carType }}</p>

@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AngularFirestore,QueryFn  } from "@angular/fire/compat/firestore";
 import { Firestore } from "@angular/fire/firestore";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { collection } from "firebase/firestore";
-import { Observable, switchMap } from "rxjs";
+import { addDoc, collection } from "firebase/firestore";
+import { Observable, catchError, map, of, switchMap, take, tap } from "rxjs";
 import { Current } from "src/app/model/book";
 import { Rental } from "src/app/model/rental";
 import { DataService } from "src/app/shared/data.service";
@@ -24,13 +24,13 @@ export class HomeComponent implements OnInit {
 
   currentUserData$: Observable<any> | undefined;
   rental$ =collectionData(collection(this.firestore, 'rentals')) as Observable<Rental[]>;
-  filtered: boolean = false; // use this to display filtered and unfiltered data
+  filtered: boolean = false; 
 
   //dropdown menu
   form: FormGroup =  this.fb.group({
     lValue: ['', Validators.required],
-    startDate: ['', Validators.required],
-    endDate: ['', Validators.required],
+    startDate: [null, Validators.required],
+    endDate: [null, Validators.required],
   });
 
   filter$: Observable<Rental[]> | undefined;
@@ -65,19 +65,38 @@ export class HomeComponent implements OnInit {
     private fireauth: AngularFireAuth, 
     private fire: AngularFirestore){}
 
-
+    store: Firestore = inject(Firestore);
   //get current user's data once they get to this page
-  ngOnInit(){
+  ngOnInit() {
     this.currentUserData$ = this.fireauth.authState.pipe(
       switchMap((user) => {
         if (user) {
-          return this.fire.collection('users').doc(user.uid).valueChanges();
+          return this.fire.collection('users').doc(user.uid).valueChanges().pipe(
+            map((userData: any) => {
+              return {
+                ...userData,
+                userId: user.uid,
+                userName: userData?.userName || 'DefaultUserName', // Provide a default value if userName is undefined
+              };
+            })
+          );
         } else {
-          return [];
+          return of(null);
         }
       }),
-    );
+      catchError((error) => {
+        alert(error.message);
+        return of(null);
+      })
+    )
+    
+  
+    this.currentUserData$.subscribe((userData) => {
+      console.log('User Data:', userData);
+    });
   }
+  
+  
 
   //store data from rentals  to currBooking
 
@@ -92,39 +111,67 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private calculateNumDays(startDate: Date, endDate: Date): number {
-    // Calculate the difference in milliseconds between the two dates
-  const timeDifference = endDate.getTime() - startDate.getTime();
+  async addCurrent(userData: any, rental: any): Promise<any> {
+    const acollection = collection(this.store, 'currBooking');
+    // Check if userData is defined and has userId
+    if (!userData || !userData.hasOwnProperty('userId')) {
+      console.error('Invalid user data or userId is undefined.');
+      alert('Invalid user data or userId is undefined.');
+      return; // or handle the error accordingly
+    }
+  
+    const startDate = this.form.get('startDate')?.value;
+    const endDate = this.form.get('endDate')?.value;
+  
+    if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
+      console.error('Invalid Date');
+      alert('Invalid Date');
+      return;
+    }
+  
+    const numOfDays = this.calculateNumDays(startDate, endDate);
 
-  // Convert the time difference to days
-  const numOfDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-  return numOfDays;
+    await addDoc(acollection, {
+      'userId': userData.userId,
+      'userName': userData.userName,
+      'brand': rental.brand,
+      'model': rental.model,
+      'location': rental.location,
+      'startDate': startDate,
+      'endDate': endDate,
+      'numOfDays': numOfDays,
+      'numSeat': rental.numSeat,
+      'rate': rental.rate * numOfDays,
+    }).then(() => {
+      alert('Booking successful');
+    }).catch((error) => {
+      console.error('Booking unsuccessful:', error);
+      alert('Booking unsuccessful');
+    });
   }
+  
 
-  bookService(rental: any){
-   this.currentUserData$?.subscribe((userData) => {
-      if (userData) {
-        const numOfDays = this.calculateNumDays(this.form.value.startDate, this.form.value.endDate);
-        const booking: Current = {
-          userId: userData.userId,
-          userName: userData.userName,
-          brand: rental.brand,
-          model: rental.model,
-          location: rental.location,
-          startDate: this.form.value.startDate, 
-          endDate: this.form.value.endDate, 
-          numOfDays:  numOfDays,
-          numSeat: rental.numSeat,
-          rate: rental.rate * numOfDays,
-        };
-        this.data.addCurrent(booking).then(()=>{
-          alert("Booking Succesful");
-        }).catch((error)=>{
-          console.log("Booking unsuccesful:", error);
-        })
+  private calculateNumDays(startDate: Date, endDate: Date): number {
+    if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
+      alert("Invalid Date")
+    }
+    // Calculate the difference in milliseconds between the two dates
+    const timeDifference = endDate.getTime() - startDate.getTime();
+    // Convert the time difference to days
+    const numOfDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    return numOfDays;
+  }
+  
+
+  bookService(rental: any) {
+    this.currentUserData$?.subscribe({
+      next: (userData) => {
+        if (userData) {
+          this.addCurrent(userData, rental);
+        }
+      },error: (error) => {
+        console.error("Error getting user data:", error);
       }
     });
   }
-
 }
