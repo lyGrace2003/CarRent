@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,10 +10,15 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent {
 
-  constructor(private router: Router) {}
+  constructor(private fireauth: AngularFireAuth ,private router: Router) {}
 
   logout() {
-    this.router.navigate(['/']);
+    this.fireauth.signOut().then(() =>{
+      localStorage.removeItem('token');
+      this.router.navigate(['/']);
+    }).catch((error)=>{
+      console.error("Error creating user: ", error);
+    })
   }
 
   @Output() sidebarToggle = new EventEmitter<boolean>();

@@ -36,4 +36,19 @@
         </a>
     </mat-toolbar>
     </div>
+    <div class="rental-display">
+        <div *ngIf="(rental$ | async) as rentals" class="card-container">
+          <div *ngFor="let rental of rentals" class="card">
+            <div class="card-body">
+              <h4 class="card-title">{{ rental.brand }} {{ rental.model }}</h4>
+              <p class="card-text">Car Type: {{ rental.carType }}</p>
+              <p class="card-text">Location: {{ rental.location }}</p>
+              <p class="card-text">Available: {{ rental.available ? 'Yes' : 'No' }}</p>
+              <p class="card-text">Number of Seats: {{ rental.numSeat }}</p>
+              <p class="card-text">Rate: {{ rental.rate }}</p>
+              <a mat-raised-button color="warn" style="color: white;" class="book" (click)="bookService()">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>      
 </div>

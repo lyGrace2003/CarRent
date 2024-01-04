@@ -19,6 +19,7 @@ import { BookingComponent } from '../screens/booking/booking.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import {MatMenuModule} from '@angular/material/menu';
+import {provideStorage, getStorage} from '@angular/fire/storage';;
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {MatMenuModule} from '@angular/material/menu';
     AngularFirestoreModule,
     provideFirebaseApp(()=>initializeApp(environment.firebase)),
     provideFirestore(()=> getFirestore()),
+    provideStorage(()=> getStorage()),
   ]
 })
 export class UserModule { }

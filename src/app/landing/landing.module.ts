@@ -13,7 +13,6 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { StartComponent } from '../screens/start/start.component';
 import { LoginComponent } from '../screens/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../shared/auth.service';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule,FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/auth.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,31 @@ export class LoginComponent {
     email: ['', Validators.required],
     password: ['', Validators.required]
   });
-  constructor (private authService: AuthService, private fb: FormBuilder, private router: Router){}
+
+
+  constructor (private fireauth: AngularFireAuth,private fb: FormBuilder, private router: Router,private firestore: AngularFirestore){}
+
+
+  checkRole(id: string){
+    const userDocRef = this.firestore.collection('users').doc(id);
+    userDocRef.get().subscribe((doc) => {
+      if (doc.exists) {
+        const role = doc.get('role');
+        if (role === 'admin') {
+          this.router.navigate(['/admin']);
+        } else if (role === 'user') {
+          this.router.navigate(['/user']);
+        } else {
+          console.error('Invalid role:', role);
+          alert("Error loging in user: ");
+          this.router.navigate(['/']);
+        }
+      } else {
+        alert('User not found');
+        this.router.navigate(['/']);
+      }
+    });
+  }
 
   login(){
     if(this.form.value.email.trim()=='' || this.form.value.password.trim()==''){
@@ -23,7 +48,17 @@ export class LoginComponent {
     }else if(!this.form.value.email.trim().includes("@")){
       alert("Email is invalid");
     }else{
-      this.authService.login(this.form.value.email.trim(), this.form.value.password.trim());
+      this.fireauth.signInWithEmailAndPassword(this.form.value.email.trim(),this.form.value.password.trim()).then((userCredential) => {
+        const uid = userCredential.user?.uid;
+        localStorage.setItem('token','true');
+        if(uid){
+          this.checkRole(uid);
+        }
+    })
+    .catch((error) => {
+      alert("Error loging in user: ");
+      this.router.navigate(['/']);
+    });
     }
   }
 }

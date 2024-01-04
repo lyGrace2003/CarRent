@@ -9,7 +9,10 @@ import {AngularFireAuth} from '@angular/fire/compat/auth';
 })
 export class DataService {
 
-  constructor(private fireauth: AngularFireAuth ,private afs: AngularFirestore ) {}
+  constructor(private fireauth: AngularFireAuth ,private firestore: AngularFirestore ) {}
 
-  
+  addCurrent(bookingData: any): Promise<any> {
+    return this.firestore.collection('currBooking').add(bookingData);
+  }
+
 }
