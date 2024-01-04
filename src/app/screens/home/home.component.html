@@ -1,54 +1,69 @@
 <div class="home-container">
-    <div class="header">   
+    <div class="option-form" [formGroup]="form">   
         <mat-toolbar class="toolbar">
         <span class="title">Cars For Rent</span>
 
         <span class="spacer"></span>
-        <a mat-raised-button color="warn" id="btn" class="location" [matMenuTriggerFor]="locationMenu">
-            <span>Location</span>
-            <mat-icon><span class="material-symbols-outlined">arrow_drop_down</span></mat-icon>
-        </a>
-        <mat-menu #locationMenu="matMenu">
-            <button mat-menu-item>Cebu</button>
-            <button mat-menu-item>Mabolo</button>
-            <button mat-menu-item>Talisay</button>
-        </mat-menu>
-        <a mat-raised-button color="warn" id="btn" class="numSeat" [matMenuTriggerFor]="seatMenu">
-            <span>Num of seats</span>
-            <mat-icon><span class="material-symbols-outlined">arrow_drop_down</span></mat-icon>
-        </a>
-        <mat-menu #seatMenu="matMenu">
-            <button mat-menu-item>2</button>
-            <button mat-menu-item>4</button>
-            <button mat-menu-item>5</button>
-            <button mat-menu-item>7</button>
-            <button mat-menu-item>8</button>
-        </mat-menu>
-        <!-- date - need to drop down a calendar -->
-        <a mat-raised-button color="warn" id="btn" class="pick"> 
-            <span>Pick-up</span>
-            <mat-icon><span class="material-symbols-outlined">arrow_drop_down</span></mat-icon>
-        </a>
-        <!-- date - need to drop down a calendar -->
-        <a mat-raised-button color="warn" id="btn" class="drop">
-            <span>Drop-off</span>
-            <mat-icon><span class="material-symbols-outlined">arrow_drop_down</span></mat-icon>
-        </a>
+        <!-- select location -->
+        <mat-form-field class="fields">
+            <mat-label>Location</mat-label>
+            <mat-select formControlName="lValue">
+              <mat-option value="Cebu">Cebu</mat-option>
+              <mat-option value="Mabolo">Mabolo</mat-option>
+              <mat-option value="Talisay">Talisay</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!-- select start and end date -->
+          <mat-form-field class="fields">
+            <mat-label>Dates</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date" formControlName="startDate">
+                <input matEndDate placeholder="End date" formControlName="endDate">
+            </mat-date-range-input>
+            <mat-hint class="hint">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+                
+        <a mat-raised-button color="primary" style="color: white;" class="save" (click)="Save()">Save</a>
     </mat-toolbar>
     </div>
+     <!-- display list from firestore -->
     <div class="rental-display">
-        <div *ngIf="(rental$ | async) as rentals" class="card-container">
-          <div *ngFor="let rental of rentals" class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ rental.brand }} {{ rental.model }}</h4>
-              <p class="card-text">Car Type: {{ rental.carType }}</p>
-              <p class="card-text">Location: {{ rental.location }}</p>
-              <p class="card-text">Available: {{ rental.available ? 'Yes' : 'No' }}</p>
-              <p class="card-text">Number of Seats: {{ rental.numSeat }}</p>
-              <p class="card-text">Rate: {{ rental.rate }}</p>
-              <a mat-raised-button color="warn" style="color: white;" class="book" (click)="bookService()">Book</a>
+        <div *ngIf="!filtered">
+            <div *ngIf="(rental$ | async) as rentals" class="card-container">
+            <div *ngFor="let rental of rentals" class="card">
+                <div class="card-body">
+                <p class="car-brand">{{ rental.brand }}</p>
+                <p class="car-model">{{ rental.model }}</p>
+                <p class="car-type">{{ rental.carType }}</p>
+                <p class="car-location">Location: {{ rental.location }}</p>
+                <p class="car-seats">Seats: {{ rental.numSeat }}</p>
+                <p class="car-rate">P{{ rental.rate }}</p>
+                <diV class="btn">
+                    <a mat-raised-button color="warn" style="color: white;" class="book" (click)="confirmBooking(rental)">Book</a>
+                </diV>
+                </div>
             </div>
+            </div>
+         </div>
+
+        <div *ngIf="filtered">
+            <div *ngIf="(filter$ | async) as filters" class="card-container">
+                <div *ngFor="let filter of filters" class="card">
+                    <div class="card-body">
+                    <p class="car-brand">{{ filter.brand }}</p>
+                    <p class="car-model">{{ filter.model }}</p>
+                    <p class="car-type">{{ filter.carType }}</p>
+                    <p class="car-location">Location: {{ filter.location }}</p>
+                    <p class="car-seats">Seats: {{ filter.numSeat }}</p>
+                    <p class="car-rate">P{{ filter.rate }}</p>
+                    <diV class="btn">
+                        <a mat-raised-button color="warn" style="color: white;" class="book" (click)="confirmBooking(filter)">Book</a>
+                    </diV>
+                    </div>
+                </div>
+                </div>
           </div>
-        </div>
       </div>      
 </div>

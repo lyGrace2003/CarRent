@@ -19,7 +19,13 @@ import { BookingComponent } from '../screens/booking/booking.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import {MatMenuModule} from '@angular/material/menu';
-import {provideStorage, getStorage} from '@angular/fire/storage';;
+import {provideStorage, getStorage} from '@angular/fire/storage';
+import { FormsModule } from '@angular/forms'; 
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -45,6 +51,11 @@ import {provideStorage, getStorage} from '@angular/fire/storage';;
     provideFirebaseApp(()=>initializeApp(environment.firebase)),
     provideFirestore(()=> getFirestore()),
     provideStorage(()=> getStorage()),
+    FormsModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule
   ]
 })
 export class UserModule { }

@@ -13,8 +13,6 @@ import { Current, Previous } from "src/app/model/book";
 
 export class BookingComponent{
 
-  //crashes for some reason
-
   // curr$ = collectionData(collection(this.firestore, 'rentals')) as Observable<Current[]>;
   // prev$ = collectionData(collection(this.firestore, 'rentals')) as Observable<Previous[]>;
 
