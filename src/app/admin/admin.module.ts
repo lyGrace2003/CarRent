@@ -15,7 +15,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
-
+import {MatTableModule} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,8 @@ import { MatMenuModule } from '@angular/material/menu';
     FormsModule,
     MatSelectModule,
     MatMenuModule,
+    MatTableModule,
+    MatTableDataSource
   ]
 })
 export class AdminModule { }

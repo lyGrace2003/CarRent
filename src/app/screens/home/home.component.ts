@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit {
               return {
                 ...userData,
                 userId: user.uid,
-                userName: userData?.userName || 'DefaultUserName', // Provide a default value if userName is undefined
+                userName: userData?.userName || 'DefaultUserName', 
               };
             })
           );
@@ -88,34 +88,28 @@ export class HomeComponent implements OnInit {
       })
     )
     
-  
     this.currentUserData$.subscribe((userData) => {
       console.log('User Data:', userData);
     });
   }
-  
-  
-
-  //store data from rentals  to currBooking
-
   confirmBooking(rental: any) {
     const isConfirmed = window.confirm("Are you sure you want to rent this car?");
     
     if (isConfirmed) {
       this.bookService(rental);
     } else {
-      // User cancelled the booking
       console.log("Booking cancelled");
     }
   }
 
   async addCurrent(userData: any, rental: any): Promise<any> {
     const acollection = collection(this.store, 'currBooking');
+    const acollectiontwo = collection(this.store, 'transactions');
     // Check if userData is defined and has userId
     if (!userData || !userData.hasOwnProperty('userId')) {
         console.error('Invalid user data or userId is undefined.');
         alert('Invalid user data or userId is undefined.');
-        return; // or handle the error accordingly
+        return;
     }
 
     const startDate = this.form.get('startDate')?.value;
@@ -130,34 +124,43 @@ export class HomeComponent implements OnInit {
     const numOfDays = this.calculateNumDays(startDate, endDate);
 
     try {
-        // Use addDoc to add a new document to the collection
-        const newDocRef = await addDoc(acollection, {
-            'bookingID': '',
-            'userId': userData.userId,
-            'userName': userData.name,
-            'brand': rental.brand,
-            'model': rental.model,
-            'location': rental.location,
-            'startDate': startDate,
-            'endDate': endDate,
-            'numOfDays': numOfDays,
-            'numSeat': rental.numSeat,
-            'rate': rental.rate * numOfDays,
-        });
+      const newDocRef = await addDoc(acollection, {
+          'bookingId': '',
+          'userId': userData.userId,
+          'userName': userData.name,
+          'brand': rental.brand,
+          'model': rental.model,
+          'location': rental.location,
+          'startDate': startDate,
+          'endDate': endDate,
+          'numOfDays': numOfDays,
+          'numSeat': rental.numSeat,
+          'rate': rental.rate * numOfDays,
+          'transactionID': ''
+      });
+      const newBookingId = newDocRef.id;
+      await updateDoc(doc(acollection, newBookingId), {
+        'bookingId': newBookingId
+    });
+      const docu = await addDoc(acollectiontwo, {
+        'userID': userData.userId,
+        'userName': userData.name,
+        'rentalID': newBookingId,
+        'numOfDays': numOfDays,
+        'status': 'in-progress'
+    });
+      const newtransID = docu.id;
 
-        // Access the auto-generated ID of the newly added document
-        const newBookingId = newDocRef.id;
-
-        // Update the document with the actual ID
-        await updateDoc(doc(acollection, newBookingId), {
-            'bookingId': newBookingId
-        });
-
-        alert('Booking successful');
-    } catch (error) {
-        console.error('Booking unsuccessful:', error);
-        alert('Booking unsuccessful');
-    }
+      await updateDoc(doc(acollection, newBookingId), {
+        'transactionID': newtransID
+    });
+  
+      alert('Booking successful');
+  } catch (error) {
+      console.error('Booking unsuccessful:', error);
+      alert('Booking unsuccessful');
+  }
+  
 }
 
   

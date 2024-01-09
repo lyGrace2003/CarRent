@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AngularFirestore, DocumentReference } from "@angular/fire/compat/firestore";
 import { Firestore } from "@angular/fire/firestore";
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 @Component({
   selector: 'app-booking',
@@ -35,6 +35,7 @@ export class BookingComponent implements OnInit {
 
   async complete(curbooking: any) {
     const acollection = collection(this.store, 'prevBooking');
+    const acollectiontwo = collection(this.store, 'transactions');
 
     try {
         // Add the current booking to the 'prevBooking' collection
@@ -49,13 +50,16 @@ export class BookingComponent implements OnInit {
             'numOfDays': curbooking.numOfDays,
             'numSeat': curbooking.numSeat,
             'rate': curbooking.rate,
+            'transactionID': curbooking.transactionID,
         });
 
-        // Assuming you have a 'bookingId' property in curbooking
         const currBookingDocRef = doc(this.store, 'currBooking', curbooking.bookingId);
-
+        const transactionDocRef = doc(acollectiontwo, curbooking.transactionID);
         // Delete the current booking document from 'currBooking'
         await deleteDoc(currBookingDocRef);
+        await updateDoc(transactionDocRef, {
+          'status': 'complete'
+      });
 
         console.log('Document deleted from currBooking');
         alert('Booking Complete');
