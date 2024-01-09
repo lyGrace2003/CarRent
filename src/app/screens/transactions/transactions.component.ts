@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Transactions } from 'src/app/model/transactions';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-trans',
@@ -10,19 +10,13 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./transactions.component.css']
 })
 export class TransactionComponent implements OnInit {
+  transactions$: Observable<Transactions[]> | null = null;
 
-  trans$: Observable<Transactions[]> | undefined;  // Make sure it's initialized as Observable<Transactions[]> | undefined
-  dataSource: MatTableDataSource<Transactions> = new MatTableDataSource();  // Initialize MatTableDataSource
+  constructor(private firestore: AngularFirestore) {}
+  displayedColumns: string[] = ['userID', 'userName', 'rentalID', 'numOfDays', 'rate', 'status'];
 
-  displayedColumns: string[] = ['UserID', 'Username', 'RentalID', 'Days', 'Rate', 'Status'];
-
-  constructor(private readonly firestore: Firestore) {}
-
-  ngOnInit() {
-    this.trans$ = collectionData(collection(this.firestore, 'transactions')) as Observable<Transactions[]>;
-    this.trans$.subscribe(data => {
-      console.log('Firestore Data:', data);
-      this.dataSource.data = data;  // Assign the data to MatTableDataSource
-    });
+  ngOnInit(): void {
+    const transactionsCollection: AngularFirestoreCollection<Transactions> = this.firestore.collection('transactions');
+    this.transactions$ = transactionsCollection.valueChanges();
   }
 }

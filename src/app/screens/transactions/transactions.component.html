@@ -1,46 +1,37 @@
 <div class="container">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table *ngIf="(transactions$ | async) as transactions" mat-table [dataSource]="transactions" class="mat-elevation-z8">
 
-        <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-      
-        <!-- Position Column -->
-        <ng-container matColumnDef="UserID">
-          <th mat-header-cell *matHeaderCellDef> No. </th>
-          <td mat-cell *matCellDef="let trans"> {{trans.UserID}} </td>
-        </ng-container>
-      
-        <!-- Name Column -->
-        <ng-container matColumnDef="Username">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let trans"> {{trans.Username}} </td>
-        </ng-container>
-      
-        <!-- Weight Column -->
-        <ng-container matColumnDef="RentalID">
-          <th mat-header-cell *matHeaderCellDef> Weight </th>
-          <td mat-cell *matCellDef="let trans"> {{trans.RentalID}} </td>
-        </ng-container>
-      
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="Days">
-          <th mat-header-cell *matHeaderCellDef> Symbol </th>
-          <td mat-cell *matCellDef="let trans"> {{trans.Days}} </td>
+        <!-- Define your table columns -->
+        <ng-container matColumnDef="userID">
+          <th mat-header-cell *matHeaderCellDef> User ID </th>
+          <td mat-cell *matCellDef="let transaction"> {{ transaction.userID }} </td>
         </ng-container>
 
-        <ng-container matColumnDef="Rate">
-            <th mat-header-cell *matHeaderCellDef> Symbol </th>
-            <td mat-cell *matCellDef="let trans"> {{trans.Rate}} </td>
-        </ng-container>
+        <ng-container matColumnDef="userName">
+            <th mat-header-cell *matHeaderCellDef> Username </th>
+            <td mat-cell *matCellDef="let transaction"> {{ transaction.userName }} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="Status">
-            <th mat-header-cell *matHeaderCellDef> Symbol </th>
-            <td mat-cell *matCellDef="let trans"> {{trans.Status}} </td>
-        </ng-container>
-      
+          <ng-container matColumnDef="rentalID">
+            <th mat-header-cell *matHeaderCellDef> RentalID </th>
+            <td mat-cell *matCellDef="let transaction"> {{ transaction.rentalID }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="numOfDays">
+            <th mat-header-cell *matHeaderCellDef> Number of Days </th>
+            <td mat-cell *matCellDef="let transaction"> {{ transaction.numOfDays }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="rate">
+            <th mat-header-cell *matHeaderCellDef> Rate </th>
+            <td mat-cell *matCellDef="let transaction"> {{ transaction.rate }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let transaction"> {{ transaction.status }} </td>
+          </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let transaction; columns: displayedColumns"></tr>
       </table>
-      
-      
 </div>
