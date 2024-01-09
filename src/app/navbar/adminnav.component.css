@@ -1,0 +1,30 @@
+.spacer {
+    flex: 1 1 auto;
+}
+.ren{
+    font-weight: 500;
+    font-size: 20pt;
+    color: white;
+}
+.van{
+    font-weight: 500;
+    font-size: 20pt;
+    color: black;
+}
+.mat-toolbar {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.logout {
+    text-decoration: none;
+    width: 150px;
+    height: 40px;
+}
+.navbar{
+    background-color: rgba(239, 108, 0, 1);
+}
+.link{
+    text-decoration: none;
+}
+
+  

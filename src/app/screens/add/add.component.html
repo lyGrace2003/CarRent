@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="add-booking">
+      <p class="title">Add Booking</p>
+      <div class="card">
+        <div class="add-form" [formGroup]="form">
+          <!-- Remove the inner form element -->
+          <div class="input-box">
+            <input type="text" placeholder="Brand" formControlName="brand" required>
+          </div>
+          <div class="input-box">
+            <input type="text" placeholder="Model" formControlName="model" required>
+          </div>
+          <div class="input-box">
+            <input type="text" placeholder="Car Type" formControlName="carType" required>
+          </div>
+          <div class="input-box">
+            <input type="text" placeholder="location" formControlName="location" required>
+          </div>
+          <div class="input-box">
+            <input type="number" placeholder="Number of Seats" formControlName="numSeat" required>
+          </div>
+          <div class="input-box">
+            <input type="number" placeholder="rates" formControlName="rates" required>
+          </div>
+          <a mat-raised-button color="primary" style="color: white;" class="add" (click)="add()">Signup</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  

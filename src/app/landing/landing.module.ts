@@ -34,7 +34,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     AngularFirestoreModule,
     provideFirebaseApp(()=>initializeApp(environment.firebase)),
     provideFirestore(()=> getFirestore()),
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class LandingModule { }
