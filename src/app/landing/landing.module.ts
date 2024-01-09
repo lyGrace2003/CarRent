@@ -15,6 +15,8 @@ import { LoginComponent } from '../screens/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { TransactionComponent } from '../screens/transactions/transactions.component';
+import { AddComponent } from '../screens/add/add.component';
 
 
 @NgModule({

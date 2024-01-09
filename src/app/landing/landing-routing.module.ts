@@ -7,6 +7,8 @@ import { LoginComponent } from '../screens/login/login.component';
 import { HomeComponent } from '../screens/home/home.component';
 import { BookingComponent } from '../screens/booking/booking.component';
 import { AdminComponent } from '../admin/admin.component';
+import { AddComponent } from '../screens/add/add.component';
+import { TransactionComponent } from '../screens/transactions/transactions.component';
 
 const routes: Routes = [
   {path: '', component: LandingComponent, children:[
@@ -19,7 +21,13 @@ const routes: Routes = [
       ]
     },
     {path: 'login', component: LoginComponent},
-    {path: 'admin', component: AdminComponent},
+    {
+      path: 'user', component: AdminComponent, children: [
+        { path: '', redirectTo: 'rental', pathMatch: 'full' },
+        { path: 'rental', component: AddComponent },
+        { path: 'transactions', component: TransactionComponent },
+      ]
+    },
   ]}
 
 ];
