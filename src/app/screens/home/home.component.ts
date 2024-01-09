@@ -3,11 +3,10 @@ import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AngularFirestore,QueryFn  } from "@angular/fire/compat/firestore";
 import { Firestore } from "@angular/fire/firestore";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { Observable, catchError, map, of, switchMap, take, tap } from "rxjs";
 import { Current } from "src/app/model/book";
 import { Rental } from "src/app/model/rental";
-import { DataService } from "src/app/shared/data.service";
 import { collectionData } from 'rxfire/firestore';
 
 
@@ -36,7 +35,7 @@ export class HomeComponent implements OnInit {
   filter$: Observable<Rental[]> | undefined;
 
   applyFilters() {
-    const { lValue, nValue } = this.form.value;
+    const { lValue } = this.form.value;
 
     let queryFn: QueryFn | undefined;
 
@@ -61,7 +60,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private readonly firestore: Firestore, 
-    private data: DataService, 
     private fireauth: AngularFireAuth, 
     private fire: AngularFirestore){}
 
@@ -115,40 +113,53 @@ export class HomeComponent implements OnInit {
     const acollection = collection(this.store, 'currBooking');
     // Check if userData is defined and has userId
     if (!userData || !userData.hasOwnProperty('userId')) {
-      console.error('Invalid user data or userId is undefined.');
-      alert('Invalid user data or userId is undefined.');
-      return; // or handle the error accordingly
+        console.error('Invalid user data or userId is undefined.');
+        alert('Invalid user data or userId is undefined.');
+        return; // or handle the error accordingly
     }
-  
+
     const startDate = this.form.get('startDate')?.value;
     const endDate = this.form.get('endDate')?.value;
-  
+
     if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
-      console.error('Invalid Date');
-      alert('Invalid Date');
-      return;
+        console.error('Invalid Date');
+        alert('Invalid Date');
+        return;
     }
-  
+
     const numOfDays = this.calculateNumDays(startDate, endDate);
 
-    await addDoc(acollection, {
-      'userId': userData.userId,
-      'userName': userData.userName,
-      'brand': rental.brand,
-      'model': rental.model,
-      'location': rental.location,
-      'startDate': startDate,
-      'endDate': endDate,
-      'numOfDays': numOfDays,
-      'numSeat': rental.numSeat,
-      'rate': rental.rate * numOfDays,
-    }).then(() => {
-      alert('Booking successful');
-    }).catch((error) => {
-      console.error('Booking unsuccessful:', error);
-      alert('Booking unsuccessful');
-    });
-  }
+    try {
+        // Use addDoc to add a new document to the collection
+        const newDocRef = await addDoc(acollection, {
+            'bookingID': '',
+            'userId': userData.userId,
+            'userName': userData.name,
+            'brand': rental.brand,
+            'model': rental.model,
+            'location': rental.location,
+            'startDate': startDate,
+            'endDate': endDate,
+            'numOfDays': numOfDays,
+            'numSeat': rental.numSeat,
+            'rate': rental.rate * numOfDays,
+        });
+
+        // Access the auto-generated ID of the newly added document
+        const newBookingId = newDocRef.id;
+
+        // Update the document with the actual ID
+        await updateDoc(doc(acollection, newBookingId), {
+            'bookingId': newBookingId
+        });
+
+        alert('Booking successful');
+    } catch (error) {
+        console.error('Booking unsuccessful:', error);
+        alert('Booking unsuccessful');
+    }
+}
+
   
 
   private calculateNumDays(startDate: Date, endDate: Date): number {

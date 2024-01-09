@@ -1,9 +1,41 @@
 <div class="booking-container">
     <div class="currentBooking">
-        <span>Current Booking</span>
-        
+        <span class="title">Current Booking</span>
+        <div *ngFor="let curbooking of currBookingData" class="card-container">
+            <!-- Display current booking data -->
+            <div class="card">
+                <!-- add image here -->
+            <p class="car-brand">{{ curbooking.brand }}</p>
+            <p class="car-model">{{ curbooking.model }}</p>
+            <p class="car-type">{{ curbooking.carType }}</p>
+            <p class="car-startDate">Start Date: {{ formatTimestamp(curbooking.startDate) | date:'shortDate' }}</p>
+            <p class="car-endDate">End Date: {{ formatTimestamp(curbooking.endDate) | date:'shortDate' }}</p>
+            <p class="car-location">Location: {{ curbooking.location }}</p>
+            <p class="car-seats">Seats: {{ curbooking.numSeat }}</p>
+            <p class="car-rate">P{{ curbooking.rate }}</p>
+            <diV class="btn">
+                <a mat-raised-button color="warn" style="color: white;" class="complete" (click)="complete(curbooking)">Complete</a>
+            </diV>
+          </div>
+          <!-- {{ curbooking | json }} -->
+    </div>
     </div>
     <div class="previousBooking">
-        <span>Previous Bookings</span>
+        <span class="title">Previous Bookings</span>
+        <div *ngFor="let prevbooking of prevBookingData">
+            <!-- Display previous booking data -->
+            <div class="card">
+                <!-- add image here -->
+            <p class="car-brand">{{ prevbooking.brand }}</p>
+            <p class="car-model">{{ prevbooking.model }}</p>
+            <p class="car-type">{{ prevbooking.carType }}</p>
+            <p class="car-startDate">Start Date: {{ formatTimestamp(prevbooking.startDate) | date:'shortDate' }}</p>
+            <p class="car-endDate">End Date: {{ formatTimestamp(prevbooking.endDate) | date:'shortDate' }}</p>
+            <p class="car-location">Location: {{ prevbooking.location }}</p>
+            <p class="car-seats">Seats: {{ prevbooking.numSeat }}</p>
+            <p class="car-rate">P{{ prevbooking.rate }}</p>
+          </div>
+            <!-- {{ prevbooking | json }} -->
+          </div>
     </div>
 </div>
